@@ -16,7 +16,7 @@ def Main():
             if not row[2] or row[1] == 'None':
                 continue
             stats[row[2]] += 1
-    print(stats.most_common(10))
+    print(stats.most_common(50))
 
 
 if __name__ == "__main__":
