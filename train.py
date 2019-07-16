@@ -4,9 +4,9 @@ import numpy as np
 from layers.atnconv.atnconv import AtnConv
 
 DATA_DIR_PATH = '/mnt/shared_data/Workspace/landmark/img/2449/'
-BATCH_SIZE = 2
-TRAIN_STEPS = 1000
-IMAGE_DIM = 128
+BATCH_SIZE = 1
+TRAIN_STEPS = 10000
+IMAGE_DIM = 256
 
 def main():
     dataset_batch = load_dataset()
@@ -50,7 +50,7 @@ def preprocess(input_img):
     mask_val = np.zeros(shape=[BATCH_SIZE, IMAGE_DIM, IMAGE_DIM, 1], dtype=np.float32)
     mask_val[:, 64:196, 64:196, 0] = 1
     mask = tf.constant(mask_val, dtype=tf.float32, name='mask')
-    masked_img = input_img * mask
+    masked_img = input_img * (-mask + 1)
     final_img = tf.concat([masked_img, mask], axis=3)
     return final_img, mask
 
