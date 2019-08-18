@@ -1,3 +1,5 @@
 .env/
 .vscode/
+model/
+logs/
 data
