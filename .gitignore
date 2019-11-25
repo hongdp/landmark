@@ -2,6 +2,6 @@
 .vscode/
 model/
 logs/
-data
+data/
 .ipynb_checkpoints/
 *.pyc
