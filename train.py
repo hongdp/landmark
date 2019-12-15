@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 sys.path.append("/home/hongdp/Workspace/landmark")
 
-DATA_DIR_PATH = '/mnt/shared_data/Workspace/landmark/img/9633/'
+DATA_DIR_PATH = '/home/hongdp/Workspace/landmark/local_data/img/'
 BATCH_SIZE = 2
 TRAIN_STEPS = 1500000
 CKPT_INTERVAL = 5000
@@ -37,8 +37,8 @@ def load_dataset():
     all_image_paths = list(data_root.glob('*'))
     all_image_paths = [str(path) for path in all_image_paths]
     path_ds = tf.data.Dataset.from_tensor_slices(all_image_paths)
-    image_ds = path_ds.map(load_and_preprocess_image, num_parallel_calls=8)
-    image_ds = image_ds.repeat().batch(BATCH_SIZE).prefetch(1)
+    image_ds = path_ds.map(load_and_preprocess_image, num_parallel_calls=12)
+    image_ds = image_ds.repeat().batch(BATCH_SIZE).prefetch(2)
 
     iter = image_ds.make_one_shot_iterator()
     el = iter.get_next()
@@ -224,12 +224,12 @@ def main():
                 train_writer.add_summary(
                     summary_val, tf.compat.v1.train.global_step(sess, global_step_tensor))
             if not g_steps % CKPT_INTERVAL:
-                save_path = saver.save(
+                saver.save(
                     sess, "./model/%s/model.ckpt" % (RUN), global_step=global_step_tensor)
             pbar.update(1)
 
-    save_path = saver.save(sess, "./model/%s/model.ckpt" %
-                           (RUN), global_step=global_step_tensor)
+    saver.save(sess, "./model/%s/model.ckpt" %
+               (RUN), global_step=global_step_tensor)
 
 
 if __name__ == '__main__':

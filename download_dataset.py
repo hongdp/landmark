@@ -5,6 +5,7 @@ import os.path
 import tqdm
 from multiprocessing import Pool
 from functools import partial
+from http.client import RemoteDisconnected
 
 
 def load_index(index_file_name, classes=None):
@@ -17,18 +18,24 @@ def load_index(index_file_name, classes=None):
             id = row[0]
             url = row[1]
             image_class = row[2]
-            if not classes or image_class  in classes:
+            if not classes or image_class in classes:
                 index.append((id, url))
     return index
+
 
 def download(output_path, args):
     id, url = args
     if url == 'None':
         return
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except RemoteDisconnected:
+        return
+
     if r.status_code == 200:
         with open(os.path.join(output_path, id), 'wb') as f:
             f.write(r.content)
+
 
 def download_files(index, output_path, workers):
     print('downloading image to {}'.format(output_path))

@@ -3,5 +3,6 @@
 model/
 logs/
 data/
+local_data/
 .ipynb_checkpoints/
 *.pyc
