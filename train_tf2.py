@@ -199,10 +199,7 @@ def main():
     # Iterate over epochs.
     for epoch in range(epochs):
         print('Start of epoch %d' % (epoch,))
-
-        # Iterate over the batches of the dataset.
-        for step, x_batch_train in enumerate(train_dataset):
-            train(train_dataset, lmk_model, optimizer, d_loss_metric, g_loss_metric)
+        train(train_dataset, lmk_model, optimizer, d_loss_metric, g_loss_metric)
 
 
 if __name__ == '__main__':
